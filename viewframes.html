@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="dashboard-card">
+                <h2 class="fw-bold mb-4" style="color: var(--primary-orange);">
+                    <i class="fas fa-images me-2"></i>Processed Frames
+                </h2>
+                <p class="lead">Browse through unique and common frames extracted from your videos</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Unique Frames -->
+        <div class="col-12 mb-5">
+            <div class="feature-card">
+                <h4 class="card-title mb-4">Unique Frames</h4>
+                <div class="row">
+                    {% for frame in unique_frames %}
+                    <div class="col-md-3 mb-3">
+                        <img src="{{ frame }}" class="img-fluid rounded shadow" style="height: 200px; width: 100%; object-fit: cover;">
+                    </div>
+                    {% else %}
+                    <div class="col-12 text-center text-muted py-4">
+                        <i class="fas fa-image fa-3x mb-3"></i>
+                        <p>No unique frames found. Process a video first!</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Common Frames -->
+        <div class="col-12">
+            <div class="feature-card">
+                <h4 class="card-title mb-4">Common Frames</h4>
+                <div class="row">
+                    {% for frame in common_frames %}
+                    <div class="col-md-3 mb-3">
+                        <img src="{{ frame }}" class="img-fluid rounded shadow" style="height: 200px; width: 100%; object-fit: cover;">
+                    </div>
+                    {% else %}
+                    <div class="col-12 text-center text-muted py-4">
+                        <i class="fas fa-image fa-3x mb-3"></i>
+                        <p>No common frames found. Process a video first!</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

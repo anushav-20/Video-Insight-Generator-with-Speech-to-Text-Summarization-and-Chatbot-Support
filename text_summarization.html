@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="dashboard-card">
+                <h2 class="fw-bold mb-4" style="color: var(--primary-orange);">
+                    <i class="fas fa-file-alt me-2"></i>Text & Document Summarization
+                </h2>
+                <p class="lead">Upload documents or paste text to get AI-powered summaries in multiple languages</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Input Section -->
+        <div class="col-lg-6">
+            <div class="feature-card">
+                <h4 class="card-title mb-4">Input Your Content</h4>
+                
+                <!-- File Upload -->
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Upload Document</label>
+                        <input type="file" class="form-control" name="file" accept=".pdf,.doc,.docx,.mp3,.wav">
+                        <div class="form-text">Supported formats: PDF, DOC, DOCX, MP3, WAV</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Or Enter Text Directly</label>
+                        <textarea class="form-control" name="text_input" rows="8" placeholder="Paste your text here..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-magic me-2"></i>Generate Summary
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Output Section -->
+        <div class="col-lg-6">
+            {% if summary %}
+            <div class="feature-card">
+                <h4 class="card-title mb-4">Summary Results</h4>
+                
+                <!-- Original Summary -->
+                <div class="summary-box">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0">English Summary</h5>
+                        <!-- <button class="btn btn-sm language-btn" onclick="textToSpeech('{{ summary|replace("'", "\\'")|replace('"', '\\"') }}', 'english')">
+                            <i class="fas fa-volume-up"></i>
+                        </button> -->
+                    </div>
+                    <p>{{ summary }}</p>
+                </div>
+
+                <!-- Translated Summaries -->
+                {% for lang, text in translated_summaries.items() %}
+                <div class="summary-box">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0">{{ lang|title }} Summary</h5>
+                        <!-- <button class="btn btn-sm language-btn" onclick="textToSpeech('{{ text|replace("'", "\\'")|replace('"', '\\"') }}', '{{ lang }}')">
+                            <i class="fas fa-volume-up"></i>
+                        </button> -->
+                    </div>
+                    <p>{{ text }}</p>
+                </div>
+                {% endfor %}
+
+                <div class="text-center mt-4">
+                    <!-- <button class="btn btn-outline-primary me-2" onclick="stopAudio()">
+                        <i class="fas fa-stop me-1"></i>Stop Audio
+                    </button> -->
+                </div>
+            </div>
+            {% else %}
+            <div class="feature-card text-center">
+                <div class="feature-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <h5>No Summary Generated</h5>
+                <p>Upload a document or enter text to see the summary here</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+function textToSpeech(text, language) {
+    fetch('/text_to_speech', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            text: text,
+            language: language
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert('Error: ' + data.error);
+        }
+    });
+}
+
+function stopAudio() {
+    fetch('/stop_audio', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+}
+</script>
+{% endblock %}

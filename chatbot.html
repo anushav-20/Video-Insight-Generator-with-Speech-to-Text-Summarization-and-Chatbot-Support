@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="dashboard-card">
+                <h2 class="fw-bold mb-4" style="color: var(--primary-orange);">
+                    <i class="fas fa-robot me-2"></i>AI Chatbot Assistant
+                </h2>
+                <p class="lead">Chat with our AI assistant in multiple languages with text-to-speech support</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="feature-card">
+                <!-- Language Selection -->
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Select Language:</label>
+                    <div class="d-flex flex-wrap">
+                        <button class="btn language-btn active" data-lang="english">English</button>
+                        <button class="btn language-btn" data-lang="kannada">Kannada</button>
+                        <button class="btn language-btn" data-lang="hindi">Hindi</button>
+                        <button class="btn language-btn" data-lang="telugu">Telugu</button>
+                    </div>
+                </div>
+
+                <!-- Chat Container -->
+                <div class="chat-container mb-4" style="height: 400px; overflow-y: auto; border: 1px solid #e9ecef; border-radius: 15px; padding: 20px;">
+                    {% for chat in chat_history %}
+                    <div class="chat-bubble user-bubble">
+                        <strong>You ({{ chat.language|title }}):</strong><br>
+                        {{ chat.user_input }}
+                        <div class="text-end small mt-1">{{ chat.timestamp }}</div>
+                    </div>
+                    <div class="chat-bubble bot-bubble">
+                        <strong>AI Assistant:</strong><br>
+                        {{ chat.response }}
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <small>{{ chat.timestamp }}</small>
+                            <button class="btn btn-sm language-btn" onclick="textToSpeech('{{ chat.response|replace("'", "\\'")|replace('"', '\\"') }}', '{{ chat.language }}')">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="text-center text-muted py-5">
+                        <i class="fas fa-comments fa-3x mb-3"></i>
+                        <p>Start a conversation with our AI assistant!</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Chat Form -->
+                <form method="POST" id="chatForm">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="query" placeholder="Type your message..." required>
+                        <input type="hidden" name="language" id="selectedLanguage" value="english">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Audio Controls -->
+                <div class="text-center mt-3">
+                    <button class="btn btn-outline-primary me-2" onclick="stopAudio()">
+                        <i class="fas fa-stop me-1"></i>Stop Audio
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Language selection
+document.querySelectorAll('.language-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.language-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        document.getElementById('selectedLanguage').value = this.dataset.lang;
+    });
+});
+
+// Auto-scroll chat
+const chatContainer = document.querySelector('.chat-container');
+chatContainer.scrollTop = chatContainer.scrollHeight;
+
+function textToSpeech(text, language) {
+    fetch('/text_to_speech', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            text: text,
+            language: language
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert('Error: ' + data.error);
+        }
+    });
+}
+
+function stopAudio() {
+    fetch('/stop_audio', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+}
+</script>
+{% endblock %}

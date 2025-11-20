@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="dashboard-card">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h2 class="fw-bold" style="color: var(--primary-orange);">Welcome, {{ username }}! 👋</h2>
+                        <p class="lead mb-0">Ready to transform your content with AI-powered summarization?</p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Video Summarization Card -->
+        <div class="col-md-6 mb-4">
+            <div class="feature-card text-center h-100">
+                <div class="feature-icon">
+                    <i class="fas fa-video"></i>
+                </div>
+                <h4 class="card-title">Video Summarization</h4>
+                <p class="mb-4">Upload videos and extract key frames with object detection</p>
+                <div class="d-grid gap-2">
+                    <a href="/home" class="btn btn-primary">Upload Video</a>
+                    <a href="/detectlive" class="btn btn-outline-primary">Live Detection</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Text Summarization Card -->
+        <div class="col-md-6 mb-4">
+            <div class="feature-card text-center h-100">
+                <div class="feature-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <h4 class="card-title">Text & Document Summarization</h4>
+                <p class="mb-4">Summarize PDF, DOC, audio files with multi-language support</p>
+                <a href="/text_summarization" class="btn btn-primary">Process Documents</a>
+            </div>
+        </div>
+
+        <!-- AI Chatbot Card -->
+        <div class="col-md-6 mb-4">
+            <div class="feature-card text-center h-100">
+                <div class="feature-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h4 class="card-title">AI Chatbot</h4>
+                <p class="mb-4">Interactive chatbot with multi-language support and voice output</p>
+                <a href="/chatbot" class="btn btn-primary">Start Chatting</a>
+            </div>
+        </div>
+
+        <!-- View Frames Card -->
+        <div class="col-md-6 mb-4">
+            <div class="feature-card text-center h-100">
+                <div class="feature-icon">
+                    <i class="fas fa-images"></i>
+                </div>
+                <h4 class="card-title">View Processed Frames</h4>
+                <p class="mb-4">Browse through unique and common frames from your videos</p>
+                <a href="/viewframes" class="btn btn-primary">View Frames</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="dashboard-card">
+                <h4 class="fw-bold mb-4" style="color: var(--primary-orange);">System Overview</h4>
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <div class="feature-icon" style="font-size: 2rem;">
+                            <i class="fas fa-object-group"></i>
+                        </div>
+                        <h5>80+ Objects</h5>
+                        <p>YOLO Detection</p>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="feature-icon" style="font-size: 2rem;">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <h5>4 Languages</h5>
+                        <p>Supported</p>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="feature-icon" style="font-size: 2rem;">
+                            <i class="fas fa-file-upload"></i>
+                        </div>
+                        <h5>Multiple Formats</h5>
+                        <p>PDF, DOC, Audio, Video</p>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="feature-icon" style="font-size: 2rem;">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h5>AI Powered</h5>
+                        <p>Gemini Integration</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
