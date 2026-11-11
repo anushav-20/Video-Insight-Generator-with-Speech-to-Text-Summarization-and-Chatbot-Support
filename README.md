@@ -69,13 +69,6 @@ pip install -r requirements.txt
 6. Running the Application
 python app.py
 
+8. License
 
-
-
-13. Contributors
-
-Add your name and any teammates.
-
-14. License
-
-MIT License (recommended for open-source student projects).
+MIT License 
